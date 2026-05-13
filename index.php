@@ -1,8 +1,10 @@
 <?php
-// ============================================================
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 //  PAGE D'ACCUEIL — index.php
 //  Affiche les statistiques et les boutons de navigation
-// ============================================================
+
 session_start();
 include('config/db.php');
 include('includes/header.php');
