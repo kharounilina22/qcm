@@ -1,11 +1,9 @@
 <?php
-// ============================================================
 //  PAGE DE CONNEXION — login.php
-// ============================================================
 session_start();
 include('config/db.php');
 
-// Si l'utilisateur est déjà connecté, on le redirige vers l'accueil
+// Si connecté
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
@@ -14,29 +12,30 @@ if (isset($_SESSION['user_id'])) {
 $error   = '';
 $success = '';
 
-// Message si on vient de s'inscrire
+// Message inscription réussie
 if (isset($_GET['inscrit'])) {
     $success = "Inscription réussie ! Connectez-vous pour accéder à votre espace.";
 }
-
-// Traitement du formulaire de connexion
+// Traitement connexion
 if (isset($_POST['login'])) {
+
     $email    = trim($_POST['email']);
     $password = $_POST['password'];
 
-    // Recherche de l'utilisateur par email
+    // Vérification utilisateur
     $req = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $req->execute([$email]);
+
     $user = $req->fetch();
 
-    // Vérification du mot de passe avec password_verify()
+    // Vérification mot de passe
     if ($user && password_verify($password, $user['mot_de_passe'])) {
 
-        // Vérification si le compte est bloqué
+        // Vérifier si bloqué
         if ($user['bloque'] == 1) {
             $error = "Votre compte est bloqué. Contactez l'administrateur.";
         } else {
-            // Connexion réussie : on enregistre les infos dans la session
+            // Session
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['nom']     = $user['nom'];
             $_SESSION['prenom']  = $user['prenom'];
@@ -45,57 +44,213 @@ if (isset($_POST['login'])) {
             header("Location: index.php");
             exit;
         }
+
     } else {
         $error = "Email ou mot de passe incorrect.";
     }
 }
-
 include('includes/header.php');
 ?>
 
-<!-- ===== FORMULAIRE DE CONNEXION ===== -->
-<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 16px;">
-    <div class="card p-4 p-md-5" style="width: 100%; max-width: 420px;">
+<style>
+    body{
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
+        min-height: 100vh;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
+    .login-container{
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 15px;
+    }
+
+    .login-card{
+        width: 100%;
+        max-width: 430px;
+        background: white;
+        border-radius: 22px;
+        padding: 40px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.20);
+        animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn{
+        from{
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to{
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-title{
+        font-size: 30px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 8px;
+    }
+
+    .login-subtitle{
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+
+    .form-label{
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 8px;
+    }
+
+    .form-control{
+        height: 52px;
+        border-radius: 14px;
+        border: 1px solid #cbd5e1;
+        padding-left: 15px;
+        font-size: 15px;
+        transition: 0.3s;
+    }
+
+    .form-control:focus{
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+    }
+
+    .btn-login{
+        width: 100%;
+        height: 52px;
+        border: none;
+        border-radius: 14px;
+        background: #0f172a;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .btn-login:hover{
+        background: #020617;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    }
+
+    .alert{
+        border-radius: 12px;
+    }
+
+    .register-link{
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .register-link:hover{
+        text-decoration: underline;
+    }
+
+    .small-text{
+        font-size: 14px;
+        color: #64748b;
+    }
+
+    @media(max-width: 576px){
+
+        .login-card{
+            padding: 30px 22px;
+        }
+
+    }
+
+</style>
+<!-- ===== PAGE LOGIN ===== -->
+<div class="login-container">
+
+    <div class="login-card">
+
+        <!-- TITRE -->
         <div class="text-center mb-4">
-            <i class="bi bi-book-half" style="font-size: 2.5rem; color: #2563eb;"></i>
-            <h2 class="fw-bold mt-2 mb-1">Connexion</h2>
-            <p class="text-muted" style="font-size: 14px;">Entrez vos identifiants pour accéder à votre espace</p>
-        </div>
 
-        <!-- Message d'erreur ou de succès -->
+            <h2 class="login-title">Connexion</h2>
+
+            <p class="login-subtitle">
+                Entrez vos identifiants pour accéder à votre espace
+            </p>
+
+        </div>
+        <!-- ALERTES -->
         <?php if ($error): ?>
             <div class="alert alert-danger">
-                <i class="bi bi-exclamation-triangle me-2"></i><?= htmlspecialchars($error) ?>
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <?= htmlspecialchars($error) ?>
             </div>
         <?php endif; ?>
+
         <?php if ($success): ?>
             <div class="alert alert-success">
-                <i class="bi bi-check-circle me-2"></i><?= htmlspecialchars($success) ?>
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <?= htmlspecialchars($success) ?>
             </div>
         <?php endif; ?>
 
-        <!-- Formulaire -->
-        <form method="POST">
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Email</label>
-                <input type="email" name="email" class="form-control" placeholder="etudiant@univ.fr"
-                       value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
-            </div>
-            <div class="mb-4">
-                <label class="form-label fw-semibold">Mot de passe</label>
-                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
-            </div>
-            <button type="submit" name="login" class="btn btn-primary w-100 py-2 fw-semibold">
-                <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
-            </button>
-        </form>
+        <!-- FORMULAIRE -->
 
-        <p class="text-center mt-3 mb-0" style="font-size: 14px;">
-            Pas encore de compte ?
-            <a href="register.php" class="text-primary fw-semibold">S'inscrire</a>
-        </p>
+        <form method="POST">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Adresse email
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="exemple@email.com"
+                    value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
+                    required
+                >
+            </div>
+             <br>
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Mot de passe
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="••••••••"
+                    required
+                >
+            </div>
+              <br>
+            <button type="submit" name="login" class="btn-login">
+
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                Se connecter
+
+            </button>
+
+        </form>
+        <!-- FOOTER -->
+        <div class="text-center mt-4">
+
+            <span class="small-text">
+                Pas encore de compte ?
+            </span>
+
+            <a href="register.php" class="register-link">
+                S'inscrire
+            </a>
+        </div>
     </div>
 </div>
-
 <?php include('includes/footer.php'); ?>

@@ -1,8 +1,6 @@
 <?php
-// ============================================================
-//  PAGE HISTORIQUE — historique.php
+
 //  Affiche toutes les tentatives passées de l'utilisateur
-// ============================================================
 session_start();
 include('config/db.php');
 
@@ -41,7 +39,6 @@ $meilleur = $nb_valides > 0 ? max($scores) : 0;
 
 include('includes/header.php');
 ?>
-
 <div class="container py-5">
 
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
@@ -52,7 +49,6 @@ include('includes/header.php');
             <i class="bi bi-plus-circle me-2"></i>Nouveau QCM
         </a>
     </div>
-
     <!-- ===== STATISTIQUES PERSONNELLES ===== -->
     <div class="row g-3 mb-5">
 
@@ -87,7 +83,6 @@ include('includes/header.php');
         </div>
 
     </div>
-
     <!-- ===== TABLEAU DES TENTATIVES ===== -->
     <?php if ($nb_total === 0): ?>
         <div class="card p-5 text-center">
@@ -147,5 +142,4 @@ include('includes/header.php');
     <?php endif; ?>
 
 </div>
-
 <?php include('includes/footer.php'); ?>
