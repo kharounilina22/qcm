@@ -1,8 +1,6 @@
 <?php
-// ============================================================
 //  En-tête commun à toutes les pages
 //  Inclus en haut de chaque fichier PHP
-// ============================================================
 
 // On vérifie si l'utilisateur est connecté
 $est_connecte = isset($_SESSION['user_id']);
