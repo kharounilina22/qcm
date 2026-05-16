@@ -11,7 +11,7 @@ $est_admin    = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuizMaster - QCM Informatique L1</title>
+    <title>QuizLicence2 - QCM Informatique Developpement WEB L1</title>
 
     <!-- Bootstrap 5 CSS (via CDN, pas besoin de télécharger) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -88,7 +88,7 @@ $est_admin    = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 
         <!-- Logo / Nom du site -->
         <a class="navbar-brand" href="index.php">
-            <i class="bi bi-book-half me-2"></i>QuizMaster
+            <i class="bi bi-book-half me-2"></i>QuizLicence2
         </a>
 
         <!-- Bouton menu mobile -->

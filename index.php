@@ -19,11 +19,11 @@ $nb_tentatives = $pdo->query("SELECT COUNT(*) FROM attempts WHERE statut = 'term
 <div style="background: linear-gradient(135deg, #1e40af, #2563eb, #3b82f6); padding: 80px 0; color: white; text-align: center;">
     <div class="container">
         <h1 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 16px;">
-            Préparez vos examens<br>
+            Préparez vos examens pour spécialitée Developpement WEB<br>
             <span style="color: #93c5fd;">avec rigueur</span>
         </h1>
         <p style="font-size: 1.1rem; opacity: .9; max-width: 580px; margin: 0 auto 32px;">
-            QuizMaster est votre plateforme d'entraînement pour l'informatique L1.
+            QuizLicence2 est votre plateforme d'entraînement pour l'informatique L1.
             Des QCM chronométrés avec correction immédiate.
         </p>
 
